@@ -1,0 +1,188 @@
+/**************************/
+/* Ajustes para el navbar */
+/**************************/
+.navbar-brand {
+    font-size: 1.5em;
+}
+
+.navbar-brand img {
+    height: 80px;
+}
+
+.dropdown {
+    display: inline-block;
+    margin: 0 10px;
+}
+
+.menusDesplegables {
+    display: flex;
+    align-items: center;
+}
+
+/*************************/
+/* Estilos para el reloj */
+/*************************/
+.reloj {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1em;
+    color: #e9ecef;
+    padding: 4px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
+    margin-left: auto;
+    margin-right: 20px;
+    /* Espacio entre el reloj y el borde derecho del navbar */
+}
+
+.separadorSegundosReloj {
+    content: ":";
+    animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+
+    from,
+    to {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+/******************************************************************/
+/* Formularios que aparecen inicialmente ocultos en el index.html */
+/******************************************************************/
+
+#formularioAgregarLista,
+#formularioModificarLista,
+#formularioEliminarLista,
+#seccionTareas,
+#mensajeInicial,
+#contenedorTextoTareas,
+#formularioFiltrarTareas,
+#resultadosFiltrado {
+    display: none;
+}
+
+.ListaTareas {
+    max-width: 600px;
+    margin: auto;
+    margin-top: 50px;
+}
+
+.tareas {
+    list-style-type: none;
+    padding: 0;
+}
+
+.notificacion {
+    background-color: green;
+    color: white;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.notificacion-roja {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.elemento-lista {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #ddd;
+    margin-bottom: 8px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+}
+
+/***********/
+/* Botones */
+/***********/
+
+#listaTareas {
+    list-style-type: none;
+    padding: 0;
+}
+
+#listaTareas li {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+#listaTareas li span {
+    margin-right: 10px;
+}
+
+#listaTareas li button {
+    margin-left: 10px;
+}
+
+/* Estilos para el formulario de filtrado de tareas */
+#formularioFiltrarTareas {
+    max-width: 400px;
+    margin: auto;
+}
+
+#formularioFiltrarTareas h3 {
+    text-align: center;
+}
+
+#formularioFiltrarTareas .form-group {
+    margin-bottom: 1rem;
+}
+
+#formularioFiltrarTareas button[type="submit"] {
+    width: 100%;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #ccc;
+    padding: 10px 0;
+}
+
+.col {
+    flex: 1;
+    padding: 5px;
+}
+
+/* Resumen lista de tareas */
+
+.resumen-listas {
+    max-width: 600px;
+    margin: auto;
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.lista-resumen {
+    margin-bottom: 10px;
+    padding: 5px;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+}

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/img/favicon.ico" type="image/x-icon">
+
+    <title>Gestor de Listas de Tareas</title>
+
+    <!-- Enlace a Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+    <!-- Estilos personalizados -->
+    <link rel="stylesheet" href="css/estilo.css">
+
+</head>
+
+<body>
+
+    <!-- Barra de navegacion -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <!-- Logo a la izquierda -->
+            <a class="navbar-brand" href="index.html">
+                <img src="/img/logo.png" alt="Logo">
+                Gestor de Tareas
+            </a>
+            <div class="menusDesplegables mx-auto">
+                <!-- Menu desplegable para Listas de tareas -->
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuListaTareas"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Listas de Tareas
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuListaTareas">
+                        <li><button id="btnMostrarFormularioAgregarLista" class="dropdown-item">Agregar lista</button>
+                        </li>
+                        <li><button id="btnMostrarFormularioModificarLista" class="dropdown-item">Modificar
+                                lista</button></li>
+                        <li><button id="btnMostrarFormularioEliminarLista" class="dropdown-item">Eliminar lista</button>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Menu desplegable para Tareas -->
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuTareas"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Tareas
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuTareas">
+                        <li><button id="btnAgregarTarea" type="button" class="dropdown-item">Agregar tarea</button>
+                        </li>
+                        <li><button id="btnFiltrarTareas" type="button" class="dropdown-item">Filtrar
+                                tareas</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- Reloj a la derecha -->
+            <div class="reloj">
+                <span id="reloj"></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="ListaTareas container mt-3">
+        <!-- Seccion para mostrar el formulario de agregar lista de tareas -->
+        <div id="formularioAgregarLista">
+            <h2>Agregar lista de tareas</h2>
+            <form id="formAgregarLista" class="mt-3">
+                <div class="mb-3">
+                    <label for="nombreLista" class="form-label">Nombre de la lista de tareas:</label>
+                    <input type="text" class="form-control" id="nombreLista" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Agregar lista de tareas</button>
+            </form>
+        </div>
+
+        <!-- Formulario para modificar lista de tareas -->
+        <div id="formularioModificarLista">
+            <h2>Modificar lista de tareas</h2>
+            <form id="formModificarLista" class="mt-3">
+                <div class="mb-3">
+                    <label for="nombreListaModificar" class="form-label">Selecciona la lista de tareas:</label>
+                    <select class="form-select" id="nombreListaModificar">
+                        <!-- Contenido dinamico -->
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="nuevoNombreLista" class="form-label">Nuevo nombre de la lista de tareas:</label>
+                    <input type="text" class="form-control" id="nuevoNombreLista">
+                </div>
+                <button type="submit" class="btn btn-primary">Modificar lista de tareas</button>
+            </form>
+        </div>
+
+
+        <!-- Formulario para eliminar lista de tareas -->
+        <div id="formularioEliminarLista">
+            <h2>Eliminar lista de tareas</h2>
+            <form id="formEliminarLista" class="mt-3">
+                <div class="mb-3">
+                    <label for="nombreListaEliminar" class="form-label">Selecciona la lista de tareas:</label>
+                    <select class="form-select" id="nombreListaEliminar">
+                        <!-- Contenido dinamico -->
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-danger">Eliminar lista de tareas</button>
+            </form>
+        </div>
+
+        <!-- Formulario de filtrado de tareas -->
+        <form id="formularioFiltrarTareas" class="mt-4"">
+            <h3 class="mb-3">Filtrar tareas</h3>
+            <div class="form-group">
+                <label for="listaTareasFiltrarCombo">Lista de tareas:</label>
+                <select class="form-control" id="listaTareasFiltrarCombo">
+                    <!-- Opciones cargadas dinamicamente desde el localStorage -->
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="tiempoMinimo">Tiempo mínimo:</label>
+                <input type="number" class="form-control" id="tiempoMinimo" min="0" step="0.5">
+            </div>
+            <div class="form-group">
+                <label for="tiempoMaximo">Tiempo máximo:</label>
+                <input type="number" class="form-control" id="tiempoMaximo" min="0" step="0.5">
+            </div>
+            <div class="form-group">
+                <label for="palabraClave">Palabra clave:</label>
+                <input type="text" class="form-control" id="palabraClave">
+            </div>
+            <button type="submit" class="btn btn-primary">Filtrar</button>
+        </form>
+
+        <!-- Seccion para mostrar tareas de una lista especifica -->
+        <div class="mt-4" id="seccionTareas">
+            <h2 class="mb-3" id="nombreListaActual"></h2>
+
+            <!-- Formulario para agregar tarea a la lista seleccionada -->
+            <form id="formularioTarea">
+                <div class="mb-3">
+                    <label for="entradaNombreTarea" class="form-label">Nombre de la tarea:</label>
+                    <input type="text" class="form-control" id="entradaNombreTarea" required>
+                </div>
+                <div class="mb-3">
+                    <label for="entradaTiempoTarea" class="form-label">Tiempo estimado (en horas):</label>
+                    <input type="number" class="form-control" id="entradaTiempoTarea" required>
+                </div>
+                <div class="mb-3">
+                    <label for="listaTareasCombo" class="form-label">Lista de tareas:</label>
+                    <select class="form-select" id="listaTareasCombo" required>
+                        <!-- Las listas se cargaran aqui dinamicamente -->
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Agregar Tarea</button>
+            </form>
+
+            <!-- Lista de tareas de la lista seleccionada -->
+            <div id="contenedorTextoTareas" class="mb-3">
+                <h2 class="my-3">Tareas de la lista seleccionada:</h2>
+            </div>
+
+            <ul class="tareas mt-4" id="listaTareas">
+                <!-- Las tareas se agregaran aqui dinamicamente -->
+            </ul>
+        </div>
+
+        <div id="resultadosFiltrado" class="container mt-5">
+            <h2>Resultados de filtrado de tareas</h2>
+            <div id="resultadoContainer" class="mt-4"></div>
+        </div>
+
+        <!-- Contenido dinamico para mostrar el resumen de las listas -->
+        <div id="contenidoDinamico">
+            <h2 class="my-3 text-center">Resumen de listas de tareas</h2>
+
+            <!-- Aqui se mostraran las listas de tareas (nombre y duracion total) -->
+            <ul id="resumenListas" class="resumen-listas">
+                <!-- Las listas se agregaran aqui dinamicamente -->
+            </ul>
+        </div>
+        <div id="mensajeInicial" class="mensaje-inicial">
+            No hay listas de tareas creadas.
+        </div>
+    </div>
+
+    <!-- JS Bootstrap 5 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+
+    <script src="js/main.js"></script>
+
+</body>
+
+</html>
