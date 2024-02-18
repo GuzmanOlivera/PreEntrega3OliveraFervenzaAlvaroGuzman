@@ -1,3 +1,36 @@
+/****************************************/
+/* Resumen de listas de tareas (global) */
+/****************************************/
+
+function actualizarResumenListas() {
+    resumenListas.innerHTML = '';
+
+    if (listas.length === 0) {
+        mensajeInicial.style.display = 'block';
+        resumenListas.style.display = 'none';
+    } else {
+        resumenListas.style.display = 'block';
+        listas.forEach(lista => {
+            const listaElemento = document.createElement('div');
+            listaElemento.className = 'lista-resumen';
+
+            let tiempoTotalLista = 0;
+            lista.tareas.forEach(tarea => {
+                tiempoTotalLista += tarea.tiempo;
+            });
+
+            // Crear el texto a mostrar en el resumen
+            const textoLista = `${lista.nombreLista} - Total horas: ${tiempoTotalLista.toFixed(2)}`;
+            listaElemento.innerHTML = textoLista;
+
+            resumenListas.appendChild(listaElemento);
+        });
+
+        // Ocultar el mensaje inicial si hay listas de tareas
+        mensajeInicial.style.display = 'none';
+    }
+}
+
 /**********/
 /* CLASES */
 /**********/
@@ -23,26 +56,19 @@ class ListaDeTareas {
             this.tiempoTotalTareas -= tareaEliminada.tiempo;
             this.actualizarLocalStorage();
         }
+        actualizarResumenListas();
     }
 
     editarTarea(nombreTarea, nuevoNombre) {
         const tarea = this.tareas.find(t => t.nombre.toLowerCase() === nombreTarea.trim().toLowerCase());
-        if (tarea) {
-            tarea.nombre = nuevoNombre;
-            this.actualizarLocalStorage();
-        } else {
-            console.error("No se encontro la tarea especificada para editar.");
-        }
+        tarea ? (tarea.nombre = nuevoNombre, this.actualizarLocalStorage()) : console.error("No se encontró la tarea especificada para editar.");
+        actualizarResumenListas();
     }
 
     editarDuracionTarea(nombreTarea, nuevaDuracion) {
         const tarea = this.tareas.find(t => t.nombre.toLowerCase() === nombreTarea.trim().toLowerCase());
-        if (tarea) {
-            tarea.tiempo = nuevaDuracion;
-            this.actualizarLocalStorage();
-        } else {
-            console.error("No se encontro la tarea especificada para editar la duracion.");
-        }
+        tarea ? (tarea.tiempo = nuevaDuracion, this.actualizarLocalStorage()) : console.error("No se encontró la tarea especificada para editar la duración.");
+        actualizarResumenListas();
     }
 
     mostrarTareas() {
@@ -73,26 +99,24 @@ class ListaDeTareas {
         const divResultadoContainer = document.getElementById('resultadosFiltrado');
 
         divResultadoContainer.style.display = 'block';
-        // Limpiar contenido anterior
         resultadoContainer.innerHTML = '';
 
-        // Crear elemento para mostrar el mensaje
         const mensajeElement = document.createElement('div');
         mensajeElement.textContent = mensaje;
 
         if (mensaje.includes("Tareas Filtradas")) {
-            const tareasFiltradas = mensaje.split('\n').slice(1); // Obtener solo las lineas de tareas filtradas
+            const tareasFiltradas = mensaje.split('\n').slice(1); 
             // Crear fila para cada tarea filtrada
             tareasFiltradas.forEach(tarea => {
                 const fila = document.createElement('div');
                 fila.classList.add('row');
 
-                // Crear columna para el nombre de la tarea
+                // Columna para el nombre de la tarea
                 const columnaNombre = document.createElement('div');
                 columnaNombre.classList.add('col');
                 columnaNombre.textContent = tarea.split(':')[0].trim();
 
-                // Crear columna para el tiempo de la tarea
+                // Columna para el tiempo de la tarea
                 const columnaTiempo = document.createElement('div');
                 columnaTiempo.classList.add('col');
                 columnaTiempo.textContent = tarea.split(':')[1].trim();
@@ -130,7 +154,6 @@ class Tarea {
     }
 }
 
-
 // Funcion para cargar los datos de las listas de tareas desde el localstorage
 function cargarListasDesdeLocalStorage() {
     const nombresListas = Object.keys(localStorage);
@@ -157,7 +180,6 @@ const listas = cargarListasDesdeLocalStorage() || [];
 /* Evento DOM al cargar la pagina */
 document.addEventListener('DOMContentLoaded', function () {
 
-
     const formAgregarLista = document.getElementById('formAgregarLista');
     const nombreListaInput = document.getElementById('nombreLista');
     const resumenListas = document.getElementById('resumenListas');
@@ -177,8 +199,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const btnFiltrarTareas = document.getElementById("btnFiltrarTareas");
 
     const resultadosFiltrado = document.getElementById("resultadosFiltrado");
-
-
 
     mostrarReloj();
 
@@ -207,6 +227,7 @@ document.addEventListener('DOMContentLoaded', function () {
             listas.push(nuevaLista);
 
             actualizarResumenListas();
+
             /* Ocultar elementos HTML */
             resultadosFiltrado.style.display = 'none';
             formularioFiltrarTareas.style.display = 'none';
@@ -348,7 +369,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const indiceListaEliminar = listas.findIndex(lista => lista.nombreLista === nombreListaEliminar);
             if (indiceListaEliminar !== -1) {
                 listas.splice(indiceListaEliminar, 1);
-                localStorage.removeItem(nombreListaEliminar); 
+                localStorage.removeItem(nombreListaEliminar);
                 actualizarResumenListas();
                 mostrarNotificacion("La lista de tareas ha sido eliminada correctamente. ✅");
                 formularioEliminarLista.style.display = 'none'; // Ocultar el formulario despues de eliminar
@@ -360,38 +381,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    /*******************************/
-    /* Resumen de listas de tareas */
-    /*******************************/
 
-    function actualizarResumenListas() {
-        resumenListas.innerHTML = '';
-
-        if (listas.length === 0) {
-            mensajeInicial.style.display = 'block';
-            resumenListas.style.display = 'none';
-        } else {
-            resumenListas.style.display = 'block';
-            listas.forEach(lista => {
-                const listaElemento = document.createElement('div');
-                listaElemento.className = 'lista-resumen';
-
-                let tiempoTotalLista = 0;
-                lista.tareas.forEach(tarea => {
-                    tiempoTotalLista += tarea.tiempo;
-                });
-
-                // Crear el texto a mostrar en el resumen
-                const textoLista = `${lista.nombreLista} - Total horas: ${tiempoTotalLista.toFixed(2)}`;
-                listaElemento.innerHTML = textoLista;
-
-                resumenListas.appendChild(listaElemento);
-            });
-
-            // Ocultar el mensaje inicial si hay listas de tareas
-            mensajeInicial.style.display = 'none';
-        }
-    }
 
     /******** */
     /* Tareas */
@@ -401,6 +391,7 @@ document.addEventListener('DOMContentLoaded', function () {
     btnAgregarTarea.addEventListener("click", clickAgregaTarea)
     function clickAgregaTarea() {
         agregarTarea();
+        actualizarListaTareas();
     }
 
     /* Actualizar tareas */
@@ -412,9 +403,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const listaSeleccionada = listas.find(l => l.nombreLista === nombreListaSeleccionada);
 
         if (listaSeleccionada && listaSeleccionada.tareas.length > 0) {
-            // Mostrar el contenedor del texto de las tareas
             document.getElementById('contenedorTextoTareas').style.display = 'block';
-            // Iterar sobre todas las tareas de la lista seleccionada y agregarlas a la interfaz
             listaSeleccionada.tareas.forEach(tarea => {
                 const li = document.createElement('li');
                 // Campo editable para el nombre de la tarea
@@ -625,24 +614,20 @@ document.addEventListener('DOMContentLoaded', function () {
 function actualizarOpcionesCombo() {
     const listaTareasCombo = document.getElementById('listaTareasCombo');
     listaTareasCombo.innerHTML = ''; // Limpiar opciones anteriores
-
+  
     // Obtener las listas de tareas almacenadas en localStorage
     const listas = cargarListasDesdeLocalStorage();
-
-    // Agregar las opciones al select
-    listas.forEach(lista => {
-        const option = document.createElement('option');
-        option.value = lista.nombreLista;
-        option.innerHTML = lista.nombreLista;
-        listaTareasCombo.appendChild(option);
-    });
-}
-
+  
+    listaTareasCombo.append(...listas.map(lista => {
+      return new Option(lista.nombreLista, lista.nombreLista);
+    }));
+  }
 
 // Funcion para mostrar el formulario de agregar tarea
 function mostrarFormularioAgregarTarea() {
 
     document.getElementById('seccionTareas').style.display = 'block';
+    
     // Actualizar las opciones del combobox
     actualizarOpcionesCombo();
 
@@ -657,7 +642,6 @@ function mostrarFormularioAgregarTarea() {
 
 function agregarTarea() {
     mostrarFormularioAgregarTarea();
-
 }
 
 // Funcion para cargar las opciones del select desde el localStorage
@@ -687,12 +671,8 @@ function mostrarFormularioFiltrarTareas() {
     document.getElementById('formularioAgregarLista').style.display = 'none';
     document.getElementById('formularioModificarLista').style.display = 'none';
     document.getElementById('formularioEliminarLista').style.display = 'none';
-    document.getElementById('resultadosFiltrado').style.display = 'none';  
+    document.getElementById('resultadosFiltrado').style.display = 'none';
 
     // Actualizar las opciones del combobox desde localstorage
     cargarOpcionesListaTareas();
-
 }
-
-
-
