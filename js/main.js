@@ -187,6 +187,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (listas.length === 0) {
         // Mostrar el mensaje inicial
         mensajeInicial.style.display = 'block';
+        resumenListas.style.display = 'none';
     } else {
         mensajeInicial.style.display = 'none';
         resumenListas.style.display = 'block';
@@ -347,7 +348,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const indiceListaEliminar = listas.findIndex(lista => lista.nombreLista === nombreListaEliminar);
             if (indiceListaEliminar !== -1) {
                 listas.splice(indiceListaEliminar, 1);
-
+                localStorage.removeItem(nombreListaEliminar); 
                 actualizarResumenListas();
                 mostrarNotificacion("La lista de tareas ha sido eliminada correctamente. ✅");
                 formularioEliminarLista.style.display = 'none'; // Ocultar el formulario despues de eliminar
@@ -368,7 +369,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (listas.length === 0) {
             mensajeInicial.style.display = 'block';
+            resumenListas.style.display = 'none';
         } else {
+            resumenListas.style.display = 'block';
             listas.forEach(lista => {
                 const listaElemento = document.createElement('div');
                 listaElemento.className = 'lista-resumen';
@@ -664,12 +667,15 @@ function cargarOpcionesListaTareas() {
 
     const listas = cargarListasDesdeLocalStorage();
 
-    listas.forEach(lista => {
-        const option = document.createElement('option');
-        option.value = lista.nombreLista;
-        option.innerHTML = lista.nombreLista;
-        listaTareasCombo.appendChild(option);
-    });
+    if (listas) {
+
+        listas.forEach(lista => {
+            const option = document.createElement('option');
+            option.value = lista.nombreLista;
+            option.innerHTML = lista.nombreLista;
+            listaTareasCombo.appendChild(option);
+        });
+    }
 }
 
 // Funcion para mostrar el formulario de filtrado de tareas
@@ -681,7 +687,7 @@ function mostrarFormularioFiltrarTareas() {
     document.getElementById('formularioAgregarLista').style.display = 'none';
     document.getElementById('formularioModificarLista').style.display = 'none';
     document.getElementById('formularioEliminarLista').style.display = 'none';
-    document.getElementById('resultadosFiltrado').style.display = 'none';
+    document.getElementById('resultadosFiltrado').style.display = 'none';  
 
     // Actualizar las opciones del combobox desde localstorage
     cargarOpcionesListaTareas();
