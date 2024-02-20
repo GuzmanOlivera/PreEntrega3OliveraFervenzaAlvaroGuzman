@@ -18,8 +18,6 @@ function actualizarResumenListas() {
             lista.tareas.forEach(tarea => {
                 tiempoTotalLista += tarea.tiempo;
             });
-
-            // Crear el texto a mostrar en el resumen
             const textoLista = `${lista.nombreLista} - Total horas: ${tiempoTotalLista.toFixed(2)}`;
             listaElemento.innerHTML = textoLista;
 
@@ -105,7 +103,7 @@ class ListaDeTareas {
         mensajeElement.textContent = mensaje;
 
         if (mensaje.includes("Tareas Filtradas")) {
-            const tareasFiltradas = mensaje.split('\n').slice(1); 
+            const tareasFiltradas = mensaje.split('\n').slice(1);
             // Crear fila para cada tarea filtrada
             tareasFiltradas.forEach(tarea => {
                 const fila = document.createElement('div');
@@ -199,10 +197,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const btnFiltrarTareas = document.getElementById("btnFiltrarTareas");
 
     const resultadosFiltrado = document.getElementById("resultadosFiltrado");
+    const mensajeInicial = document.getElementById('mensajeInicial');
+
 
     mostrarReloj();
-
-    const mensajeInicial = document.getElementById('mensajeInicial');
 
     if (listas.length === 0) {
         // Mostrar el mensaje inicial
@@ -381,8 +379,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-
-
     /******** */
     /* Tareas */
     /******** */
@@ -430,7 +426,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 editarButton.onclick = function () {
                     // Habilitar la edicion de los campos al hacer clic en el boton editar
                     nombreTarea.contentEditable = true;
-                    nombreTarea.focus(); // Colocar el cursor en el campo de edicion
+                    nombreTarea.focus(); 
                     duracionTarea.contentEditable = true;
                 };
 
@@ -457,7 +453,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     duracionTarea.innerHTML = nuevaDuracion; // Actualizar el contenido de la duracion de la tarea en la interfaz
                 });
 
-                // Agregar elementos al elemento de lista
+                // Agregar elementos (tareas) al elemento de lista (lista de tareas)
                 li.appendChild(nombreTarea);
                 li.appendChild(document.createTextNode(': ')); // Separador entre nombre y duracion
                 li.appendChild(duracionTarea);
@@ -569,7 +565,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.body.appendChild(notificacion);
         setTimeout(function () {
             notificacion.remove();
-        }, 5000); // Eliminar la notificacion despues de 5 segundos
+        }, 5000); 
     }
 
     /****************/
@@ -582,7 +578,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const fechaHoraActual = new Date();
 
                 const dia = fechaHoraActual.getDate().toString().padStart(2, '0');
-                const mes = (fechaHoraActual.getMonth() + 1).toString().padStart(2, '0'); // Sumar 1 porque los meses comienzan desde 0
+                const mes = (fechaHoraActual.getMonth() + 1).toString().padStart(2, '0'); 
                 const año = fechaHoraActual.getFullYear();
 
                 const horas = fechaHoraActual.getHours().toString().padStart(2, '0');
@@ -614,20 +610,20 @@ document.addEventListener('DOMContentLoaded', function () {
 function actualizarOpcionesCombo() {
     const listaTareasCombo = document.getElementById('listaTareasCombo');
     listaTareasCombo.innerHTML = ''; // Limpiar opciones anteriores
-  
+
     // Obtener las listas de tareas almacenadas en localStorage
     const listas = cargarListasDesdeLocalStorage();
-  
+
     listaTareasCombo.append(...listas.map(lista => {
-      return new Option(lista.nombreLista, lista.nombreLista);
+        return new Option(lista.nombreLista, lista.nombreLista);
     }));
-  }
+}
 
 // Funcion para mostrar el formulario de agregar tarea
 function mostrarFormularioAgregarTarea() {
 
     document.getElementById('seccionTareas').style.display = 'block';
-    
+
     // Actualizar las opciones del combobox
     actualizarOpcionesCombo();
 
